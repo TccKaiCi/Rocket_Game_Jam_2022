@@ -9,7 +9,6 @@ public class HomeLevel : MonoBehaviour
     public float Timer = 1.5f;
     private void Start() => MessageBroker.Default.Receive<HomeLevelEvent>().Subscribe(eventHandle => { ChangePanel(eventHandle.panelA, eventHandle.panelB); });
 
-
     public void ChangePanel(GameObject panelA, GameObject panelB)
     {
         MovePanel(panelA, panelB);
