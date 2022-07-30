@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
+using DG.Tweening;
 
 public class HomeLevel : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public float Timer = 1.5f;
+    private void Start() => MessageBroker.Default.Receive<HomeLevelEvent>().Subscribe(eventHandle => { ChangePanel(eventHandle.panelA, eventHandle.panelB); });
+
+
+    public void ChangePanel(GameObject panelA, GameObject panelB)
     {
-        
+        MovePanel(panelA, panelB);
+        MovePanel(panelB, panelA);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public void MovePanel(GameObject panelA, GameObject panelB) => DOTween.To(() => panelA.transform.position, x => panelA.transform.position = x, new Vector3(panelB.transform.position.x, panelB.transform.position.y, panelB.transform.position.z), Timer);
+
 }
