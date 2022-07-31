@@ -52,12 +52,9 @@ public class Controller : MonoBehaviour
         if (cursorObj != null && destination != null)
         {
             Debug.Log(target.name + " " + destination.name);
-            MoveTrashToBin();
+            Debug.Log(destination.transform.position);
+            target.transform.DOMove(destination.transform.position, 3f);
         }
     }
 
-    private void MoveTrashToBin()
-    {
-         DOTween.To(() => target.position, x => target.position = x, new Vector3(destination.position.x, destination.position.y, destination.position.z), 1f);
-    }
-}
+ }
