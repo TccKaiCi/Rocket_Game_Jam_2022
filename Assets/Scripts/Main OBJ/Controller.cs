@@ -52,7 +52,7 @@ public class Controller : MonoBehaviour
         }
         else
         {
-            if(target!=null)
+            if(target!=null&&cursorObj.CompareTag("Bin"))
             destination = cursorObj.transform;
         }
         if (target!= null && destination != null)
