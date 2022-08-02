@@ -54,7 +54,7 @@ public class Controller : MonoBehaviour
     public void OnRayTrash(Ray ray)
     {
         RaycastHit hitTrash;
-        if (Physics.Raycast(ray, out hitTrash, 100, trashLayer))
+        if (Physics.Raycast(ray, out hitTrash, 100, trashLayer)&&target==null)
         {
             Debug.Log("Set Targeted " + hitTrash.collider.name);
             target = hitTrash.transform;
@@ -70,6 +70,10 @@ public class Controller : MonoBehaviour
         {
             Debug.Log("Set Destination " + hitBin.collider.name);
             destination = hitBin.transform;
+        }
+        else
+        {
+            destination = null;
         }
     }
 
