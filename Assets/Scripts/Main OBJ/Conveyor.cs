@@ -5,7 +5,7 @@ using UnityEngine;
 public class Conveyor : MonoBehaviour
 {
     public Transform startPoint;
-    public float spawnRate=1f;
+    public float spawnRate = 1f;
     public int convayorVerlocity;
     // Start is called before the first frame update
     private void Start()
@@ -28,14 +28,21 @@ public class Conveyor : MonoBehaviour
     {
         while (true)
         {
+            //get obj from pool
             GameObject trash = ObjectPool.SharedInstance.GetPooledObject();
             if (trash != null)
             {
-                trash.transform.position = startPoint.position;
-                trash.transform.rotation = startPoint.rotation;
-                trash.SetActive(true);
+                OnSpawn(trash);
             }
             yield return new WaitForSeconds(spawnRate);
         }
+    }
+
+    private void OnSpawn(GameObject trash)
+    {
+        trash.transform.position = startPoint.position;
+        trash.transform.rotation = startPoint.rotation;
+        trash.gameObject.layer = LayerMask.NameToLayer("Trash");
+        trash.SetActive(true);
     }
 }

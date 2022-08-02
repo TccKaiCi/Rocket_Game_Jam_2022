@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6805149626690982369}
   - component: {fileID: 6805149626690982374}
   - component: {fileID: 6805149626690982375}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Trash
   m_TagString: Trash
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 6805149626690982372}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -6.462225, y: 1.734453, z: -7.46}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

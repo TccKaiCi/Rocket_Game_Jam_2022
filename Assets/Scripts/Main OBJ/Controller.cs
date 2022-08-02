@@ -7,26 +7,35 @@ using System;
 public class Controller : MonoBehaviour
 {
     private const float MAXRAYCASTDISTANCE = 1000f;
+    private const float TRASHSPEED = 0.3f;
     public Camera camera;
-    public LayerMask interactLayer;
-    public float maxUseDistance;
-    public LayerMask moveAblePlayer;
-    Transform target;
+    public LayerMask trashLayer;
+    public LayerMask binLayer;
+    public Transform target;
     Transform destination;
     Stack<Vector3> Proceed = new Stack<Vector3>();
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             ChooseHandle();
 
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (target != null && destination != null)
+            {
+                MoveTrash();
+                ResetChoose();
+            }
+            ResetChoose();
         }
 
     }
@@ -34,39 +43,44 @@ public class Controller : MonoBehaviour
     private void ChooseHandle()
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Debug.DrawRay(mousePos, Camera.main.transform.forward * MAXRAYCASTDISTANCE, Color.red);
-        if (Physics.Raycast(mousePos, Camera.main.transform.forward * MAXRAYCASTDISTANCE, out RaycastHit hit))
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        OnRayBin(ray);
+        OnRayTrash(ray);
+
+        if (target != null)
+            target.position = new Vector3(mousePos.x, mousePos.y, target.transform.position.z);
+
+    }
+    public void OnRayTrash(Ray ray)
+    {
+        RaycastHit hitTrash;
+        if (Physics.Raycast(ray, out hitTrash, 100, trashLayer))
         {
-            Debug.Log(hit.collider.name);
-            GameObject cursorObj = hit.collider.gameObject;
-            MoveTrashToBin(cursorObj);
+            Debug.Log("Set Targeted " + hitTrash.collider.name);
+            target = hitTrash.transform;
         }
+
     }
 
-    private void MoveTrashToBin(GameObject cursorObj)
+    private void OnRayBin(Ray ray)
     {
-       
-        if (cursorObj.CompareTag("Trash"))
+        RaycastHit hitBin;
+
+        if (Physics.Raycast(ray, out hitBin, 100, binLayer) && target != null)
         {
-            target = cursorObj.transform;
-        }
-        else
-        {
-            if(target!=null&&cursorObj.CompareTag("Bin"))
-            destination = cursorObj.transform;
-        }
-        if (target!= null && destination != null)
-        {
-            MoveTrash();
-            ResetChoose();
+            Debug.Log("Set Destination " + hitBin.collider.name);
+            destination = hitBin.transform;
         }
     }
 
     private void MoveTrash()
     {
+        //this code make trash cant choose when they going to be handler by bin
+        target.gameObject.layer = LayerMask.NameToLayer("OnHandlerTrash");
+        //set path
         Vector3 des = destination.transform.position;
         Transform begin = target;
-        begin.DOMove(des, 1);
+        begin.DOMove(des, TRASHSPEED);
     }
 
     private void ResetChoose()
