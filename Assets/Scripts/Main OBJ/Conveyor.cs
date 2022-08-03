@@ -29,7 +29,7 @@ public class Conveyor : MonoBehaviour
         while (true)
         {
             //get obj from pool
-            GameObject trash = ObjectPool.SharedInstance.GetPooledObject();
+            GameObject trash = ObjectPool.SharedInstance.GetPooledObject("Trash");
             if (trash != null)
             {
                 OnSpawn(trash);
