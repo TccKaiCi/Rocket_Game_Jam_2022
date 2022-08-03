@@ -2,13 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrganicBin : TrashCan, ITakeOrganicTrash
+public class OrganicBin : TrashCan
 {
-    public void TakeTrash(OrganicTrash organicTrash) => base.TakeTrash();
-
-    private void Start()
+    public override void TakeTrash(Trash trash)
     {
-        base.Type = Type.Organic;
-        gameObject.AddComponent<TrashTouchBin>();
+        switch (trash.Type)
+        {
+            case Type.InOrganic:
+                TakeTrash();
+                TakeTrash();
+                break;
+            case Type.Organic:
+                TakeTrash();
+                break;
+        }
     }
+
+    private void Start() => base.Start();
 }
