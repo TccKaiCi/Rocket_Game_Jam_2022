@@ -12,21 +12,10 @@ public class TrashTouchBin : MonoBehaviour
     {
         if (collider.CompareTag(Tag.Trash.ToString()))
         {
-            var trash = collider.GetComponent<Trash>();
-
-            Debug.Log(GetComponent<TrashCan>().Type.ToString());
-
-            switch (trash.Type)
+            if (!collider.GetComponent<Trash>().IsActiveInTrash_Bin)
             {
-                case Type.InOrganic:
-                    gameObject.GetComponent<ITakeInOrganicTrash>().TakeTrash(trash as InOrganicTrash);
-                    break;
-                case Type.Organic:
-                    gameObject.GetComponent<ITakeOrganicTrash>().TakeTrash(trash as OrganicTrash);
-                    break;
-                default:
-                    Destroy(collider, 0.5f);
-                    break;
+                gameObject.GetComponent<TrashCan>().TakeTrash(collider.GetComponent<Trash>());
+                collider.GetComponent<Trash>().IsActiveInTrash_Bin = true;
             }
         }
     }
